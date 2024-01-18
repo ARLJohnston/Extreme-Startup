@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>uk.ac.gla.spre</groupId>
-	<artifactId>warmup</artifactId>
+	<artifactId>warmup-2560836j</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>warmup</name>
 	<description>Demo project for Spring Boot</description>
@@ -28,6 +28,17 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>SPRE-Snapshots</id>
+			<name>SPRE Snapshots</name>
+			<url>http://galveston.dcs.gla.ac.uk:8081/repository/maven-snapshots/</url>
+			<layout>default</layout>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 	<build>
 		<plugins>
