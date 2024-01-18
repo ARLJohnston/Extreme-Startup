@@ -8,6 +8,6 @@ public class WarmupController {
 		@GetMapping("/")
 		public String hello(@RequestParam Map<String,String> allParams) {
 				System.out.println("Request received! "+allParams.entrySet());
-				return "Hello World!";
+				return "Alistair";
 		}
 }
