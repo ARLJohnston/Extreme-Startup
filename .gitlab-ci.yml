@@ -2,6 +2,7 @@ stages:
   - build
 
 maven-build:
+    image: maven:3-eclipse-temurin-21-jammy
     stage: build
     script:
-    - echo "I should be building a Maven project here"
+		- ./mvnw clean package
