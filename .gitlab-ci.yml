@@ -2,6 +2,6 @@ stages:
   - build
 
 maven-build:
-  stage: build
+    stage: build
     script:
     - echo "I should be building a Maven project here"
