@@ -8,5 +8,10 @@
 			<username>deployer</username>
 			<password>${env.GITLAB_DEPLOYER_PASSWORD}</password>
 		</server>
+		<server>
+			<id>SPRE-Sites</id>
+			<username>deployer</username>
+			<password>${env.GITLAB_DEPLOYER_PASSWORD}</password>
+		</server>
 	</servers>
 </settings>
