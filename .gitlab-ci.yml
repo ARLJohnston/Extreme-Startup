@@ -6,3 +6,4 @@ maven-build:
     stage: build
     script:
       - ./mvnw -s ci-settings.xml clean deploy
+      - ./mvnw -s ci-settings.xml site-deploy
