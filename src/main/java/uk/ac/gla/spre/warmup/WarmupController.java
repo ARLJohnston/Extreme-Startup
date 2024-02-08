@@ -1,10 +1,6 @@
 package uk.ac.gla.spre.warmup;
 
-import org.springframework.http.*;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.*;
-import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestClient;
 import org.slf4j.Logger;
