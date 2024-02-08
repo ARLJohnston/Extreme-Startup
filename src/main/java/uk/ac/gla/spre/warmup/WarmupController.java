@@ -174,11 +174,11 @@ public class WarmupController {
 
     public String fibonnaci(List<Integer> numbers) {
         int num = numbers.get(0);
-        int n1 = 0;
+        int n1 = 1;
         int n2 = 1;
         int val = 0;
 
-        for (int i = 0; i < num; i++) {
+        for (int i = 2; i < num; i++) {
             val = n1;
             int n3 = n1 + n2;
             n1 = n2;
