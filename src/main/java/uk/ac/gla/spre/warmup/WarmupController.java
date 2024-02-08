@@ -1,6 +1,10 @@
 package uk.ac.gla.spre.warmup;
 
+import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.*;
+import reactor.core.publisher.Mono;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestClient;
 import org.slf4j.Logger;
@@ -63,8 +67,12 @@ public class WarmupController {
             && !allParams.containsKey(alreadyDelegated)) {
             logger.debug("Delegating " +question+ " to " +"http://" +hostname+
                          ":" +delegationPort);
-            return delegatedGet("http://"+hostname+":"+delegationPort +
+            try {
+                return delegatedGet("http://"+hostname+":"+delegationPort +
                                 "/?q="+question+"&"+alreadyDelegated+"=true");
+            } catch (Exception e) {
+                return "Delegated service was offline";
+            }
         }
         List<Integer> numbers = getNum(question);
 
@@ -105,6 +113,8 @@ public class WarmupController {
                 return may();
             if (question.matches(".*?: which city is the Eiffel tower in.*?"))
                 return paris();
+            if (question.matches(".*?: what is \\d+ to the power of \\d+.*?"))
+                return power(numbers);
         }
 
         return "Alistair";
@@ -187,7 +197,7 @@ public class WarmupController {
         int num = numbers.get(0);
         int num2 = numbers.get(1);
 
-        logger.info("Subtraction answer was " + Integer.toString(num1-num2));
+        logger.info("Subtraction answer was " + Integer.toString(num-num2));
         return Integer.toString(num-num2);
     }
 
@@ -204,5 +214,13 @@ public class WarmupController {
     public String paris() {
         logger.info("Rataouille");
         return "Paris";
+    }
+
+    public String power(List<Integer> numbers) {
+        int num = numbers.get(0);
+        int num2 = numbers.get(1);
+        int result = (int) Math.pow(num,num2);
+        logger.info("Power answer was " + Integer.toString(result));
+        return Integer.toString(result);
     }
 }
