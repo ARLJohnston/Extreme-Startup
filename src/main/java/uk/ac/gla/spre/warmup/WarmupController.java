@@ -26,6 +26,8 @@ public class WarmupController {
     private String hostname;
 
     private static Logger logger = LoggerFactory.getLogger(WarmupController.class);
+    
+    private static final String alreadyDelegated = "alreadyDelegated";
 
     private List<Integer> getNum(String input) {
 	int startOfQuestion = input.indexOf(':');
@@ -58,11 +60,11 @@ public class WarmupController {
         String question = allParams.get("q");
         if (question != null
             && question.contains(delegationKeyword)
-            && !allParams.containsKey("alreadyDelegated")) {
+            && !allParams.containsKey(alreadyDelegated)) {
             logger.debug("Delegating " +question+ " to " +"http://" +hostname+
                          ":" +delegationPort);
             return delegatedGet("http://"+hostname+":"+delegationPort +
-                                "/?q="+question+"&alreadyDelegated=true");
+                                "/?q="+question+"&"+alreadyDelegated+"=true");
         }
         List<Integer> numbers = getNum(question);
 
