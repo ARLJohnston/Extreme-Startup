@@ -28,6 +28,11 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-commons</artifactId>
+      <version>4.1.1</version>
+    </dependency>
   </dependencies>
 
   <distributionManagement>
