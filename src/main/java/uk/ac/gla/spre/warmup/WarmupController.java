@@ -26,11 +26,11 @@ public class WarmupController {
     private String hostname;
 
     private static Logger logger = LoggerFactory.getLogger(WarmupController.class);
-    
+
     private static final String alreadyDelegated = "alreadyDelegated";
 
     private List<Integer> getNum(String input) {
-	int startOfQuestion = input.indexOf(':');
+        int startOfQuestion = input.indexOf(':');
         String question = input.substring((startOfQuestion != -1 ? startOfQuestion + 1 : 0));
 
         Pattern pattern = Pattern.compile("(\\d+)");
@@ -48,7 +48,7 @@ public class WarmupController {
     @PostMapping("/")
     public String helloPost(@RequestParam Map<String, String> allParams) {
         logger.debug("Post: " + allParams.entrySet());
-        String question = allParams.get("q"); 
+        String question = allParams.get("q");
         List<Integer> numbers = getNum(question);
 
         return solve(question, numbers);
@@ -114,7 +114,7 @@ public class WarmupController {
         int total = numbers.get(0);
         for (int num : numbers.subList(1, numbers.size()))
             total *= num;
-        logger.info("Answer was: " + Integer.toString(total));
+        logger.info("Multiplication answer was: " + Integer.toString(total));
         return Integer.toString(total);
     }
 
@@ -122,14 +122,14 @@ public class WarmupController {
         int sum = numbers.get(0);
         for (int num : numbers.subList(1, numbers.size()))
             sum += num;
-        logger.info("Answer was: " + Integer.toString(sum));
+        logger.info("Addition answer was: " + Integer.toString(sum));
         return Integer.toString(sum);
     }
 
     public String squareAndCube(List<Integer> numbers) {
         for (int num : numbers) {
             if (Math.pow((int) Math.sqrt(num), 2) == num && Math.pow((int) Math.cbrt(num), 3) == num) {
-                logger.info("Answer was: " + Integer.toString(num));
+                logger.info("Square and Cube answer was: " + Integer.toString(num));
                 return Integer.toString(num);
             }
         }
@@ -138,62 +138,71 @@ public class WarmupController {
 
     public String largest(List<Integer> numbers) {
         String max = Integer.toString(Collections.max(numbers));
-        logger.info("Answer was: " + max);
+        logger.info("Largest answer was: " + max);
         return max;
     }
 
     public String prime(List<Integer> numbers) {
         logger.info("Calculating Primes");
-	
-	for (int num : numbers) {
-	    boolean prime = true;
-	    for (int i = 2; i*i < num; i++){
-		if (num % i == 0)
-		    prime = false;
-	    }
-	    if (prime)
-		return Integer.toString(num);
-	}
-        
+
+        for (int num : numbers) {
+            boolean prime = true;
+            for (int i = 2; i*i < num; i++){
+                if (num % i == 0)
+                    prime = false;
+            }
+            if (prime) {
+                logger.info("Prime answer was: " + num);
+                return Integer.toString(num);
+            }
+        }
+
+        logger.info("No prime answer");
         return "No number was prime";
     }
 
     public String bond() {
-	return "Sean Connery";
+        logger.info("James Bond");
+        return "Sean Connery";
     }
 
     public String fibonnaci(List<Integer> numbers) {
-	int num = numbers.get(0);
-	int n1 = 0;
-	int n2 = 1;
-	int val = 0;
-	
-	for (int i = 0; i < num; i++) {
-	    val = n1;
-	    int n3 = n1 + n2;
-	    n1 = n2;
-	    n2 = n3;
-	}
-	
-	return Integer.toString(val);
+        int num = numbers.get(0);
+        int n1 = 0;
+        int n2 = 1;
+        int val = 0;
+
+        for (int i = 0; i < num; i++) {
+            val = n1;
+            int n3 = n1 + n2;
+            n1 = n2;
+            n2 = n3;
+        }
+
+        logger.info("Fibonnaci answer was " + Integer.toString(val));
+        return Integer.toString(val);
     }
 
     public String subtract(List<Integer> numbers) {
-	int num = numbers.get(0);
-	int num2 = numbers.get(1);
-	
-	return Integer.toString(num-num2);
+        int num = numbers.get(0);
+        int num2 = numbers.get(1);
+
+        logger.info("Subtraction answer was " + Integer.toString(num1-num2));
+        return Integer.toString(num-num2);
     }
 
     public String banana() {
-	return "Yellow";
+        logger.info("Banana");
+        return "Yellow";
     }
 
     public String may() {
-	return "2016";
+        logger.info("Theresa");
+        return "2016";
     }
 
     public String paris() {
-	return "Paris";
+        logger.info("Rataouille");
+        return "Paris";
     }
 }
