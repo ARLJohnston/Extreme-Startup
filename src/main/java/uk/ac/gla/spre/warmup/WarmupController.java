@@ -30,18 +30,20 @@ public class WarmupController {
     private static final String alreadyDelegated = "alreadyDelegated";
 
     private List<Integer> getNum(String input) {
-        int startOfQuestion = input.indexOf(':');
-        String question = input.substring((startOfQuestion != -1 ? startOfQuestion + 1 : 0));
-
-        Pattern pattern = Pattern.compile("(\\d+)");
-        Matcher matcher = pattern.matcher(question);
         List<Integer> numbersList = new ArrayList<>();
+	if (input != null) {
+	    int startOfQuestion = input.indexOf(':');
+	    String question = input.substring((startOfQuestion != -1 ? startOfQuestion + 1 : 0));
 
-        while (matcher.find()) {
-            numbersList.add(Integer.parseInt(matcher.group(1)));
-            logger.debug("Added" + matcher.group(1));
-        }
+	    Pattern pattern = Pattern.compile("(\\d+)");
+	    Matcher matcher = pattern.matcher(question);
 
+	    while (matcher.find()) {
+		numbersList.add(Integer.parseInt(matcher.group(1)));
+		logger.debug("Added" + matcher.group(1));
+	    }
+
+	}
         return numbersList;
     }
 
@@ -71,6 +73,7 @@ public class WarmupController {
             }
         }
         List<Integer> numbers = getNum(question);
+	logger.debug("Question:" + question);
 
         return solve(question, numbers);
     }
@@ -86,7 +89,7 @@ public class WarmupController {
 
     //Solvers
     public String solve(String question, List<Integer> numbers) {
-        if (!question.isEmpty()) {
+        if (question != null) {
             if (question.matches(".*?: what is \\d+ multiplied by \\d+"))
                 return multiplication(numbers);
             if (question.matches(".*?: what is \\d+ plus \\d+"))
