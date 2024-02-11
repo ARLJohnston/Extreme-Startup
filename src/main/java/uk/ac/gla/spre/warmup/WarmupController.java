@@ -69,6 +69,7 @@ public class WarmupController {
                 return delegatedGet("http://"+hostname+":"+delegationPort +
                                 "/?q="+question+"&"+alreadyDelegated+"=true");
             } catch (Exception e) {
+		logger.error("Delegated service error - " + e);
                 return "Delegated service was offline";
             }
         }
