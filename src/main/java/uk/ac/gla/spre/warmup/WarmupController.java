@@ -27,7 +27,7 @@ public class WarmupController {
 
     private static Logger logger = LoggerFactory.getLogger(WarmupController.class);
 
-    private static final String alreadyDelegated = "alreadyDelegated";
+    private static final String ALREADY_DELEGATED = "alreadyDelegated";
 
     private List<Integer> getNum(String input) {
         List<Integer> numbersList = new ArrayList<>();
@@ -62,12 +62,12 @@ public class WarmupController {
         String question = allParams.get("q");
         if (question != null
             && question.contains(delegationKeyword)
-            && !allParams.containsKey(alreadyDelegated)) {
+            && !allParams.containsKey(ALREADY_DELEGATED)) {
             logger.debug("Delegating " +question+ " to " +"http://" +hostname+
                          ":" +delegationPort);
             try {
                 return delegatedGet("http://"+hostname+":"+delegationPort +
-                                "/?q="+question+"&"+alreadyDelegated+"=true");
+                                "/?q="+question+"&"+ALREADY_DELEGATED+"=true");
             } catch (Exception e) {
 		logger.error("Delegated service error - " + e);
                 return "Delegated service was offline";
