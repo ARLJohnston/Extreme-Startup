@@ -3,10 +3,19 @@ variables:
 
 stages:
   - build
+  - site
 
 maven-build:
   tags: [sprebuild]
   stage: build
   script:
-    - ./mvnw $MAVEN_CLI_OPTS -s ci-settings.xml clean spring-javaformat:apply deploy site-deploy
+    - ./mvnw $MAVEN_CLI_OPTS -s ci-settings.xml clean spring-javaformat:apply deploy 
 
+
+site-build:
+  tags: [sprebuild]
+  stage: site
+  dependencies
+    - build-job
+  script:
+    - ./mvnw $MAVEN_CLI_OPTS -s ci-settings.xml clean spring-javaformat:apply site-deploy
