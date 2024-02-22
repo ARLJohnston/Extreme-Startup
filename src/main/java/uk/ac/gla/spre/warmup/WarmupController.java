@@ -7,19 +7,26 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
+import uk.ac.gla.spre.warmup.persistence.User;
+import uk.ac.gla.spre.warmup.persistence.UserRepository;
 
 @RestController
 public class WarmupController {
 
 	@Autowired
 	private ExtremeStartupClient extremeStartupClient;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Value("${spre.delegate.keyword}")
 	private String delegationKeyword;
@@ -78,6 +85,14 @@ public class WarmupController {
 				return "Delegated service was offline";
 			}
 		}
+
+		if (question != null && question.contains("register")) {
+			return handleRegistration(question);
+		}
+		if (question != null && question.contains("login")) {
+			return handleLogin(question);
+		}
+
 		List<Integer> numbers = getNum(question);
 		logger.debug("Question:" + question);
 
@@ -240,6 +255,51 @@ public class WarmupController {
 		int result = (int) Math.pow(num, num2);
 		logger.info("Power answer was " + Integer.toString(result));
 		return Integer.toString(result);
+	}
+
+	private String handleLogin(String question) {
+		Pattern p = Pattern.compile("username=(.*?);password=(.*?)$");
+		Matcher m = p.matcher(question);
+		if (m.find()) {
+			String username = m.group(1);
+			String password = m.group(2);
+			String md5password = DigestUtils.md5Hex(password).toUpperCase();
+
+			if (null!=password && null != username) {
+				List<User> existingUser = userRepository.findByName( username );
+				if (!existingUser.isEmpty()) {
+					User user = existingUser.get(0);
+					if (md5password.equals(user.getPassword())){
+						return "OK";
+					}
+				}
+			}
+		}
+		return "Not OK";
+	}
+
+	private String handleRegistration(String question) {
+		Pattern p = Pattern.compile("username=(.*?);password=(.*?);password_again=(.*?)$");
+		Matcher m = p.matcher(question);
+		if (m.find()) {
+			String desiredUsername = m.group(1);
+			String password = m.group(2);
+			String password_again = m.group(3);
+			if (null!=password && password.equals(password_again)) {
+				List<User> existingUsers = userRepository.findByName( desiredUsername );
+				if (existingUsers.isEmpty()) {
+					String md5password = DigestUtils.md5Hex(password).toUpperCase();
+					User user = new User(desiredUsername, md5password);
+					userRepository.save(user);
+					return "OK";
+				} else {
+					logger.debug("User already exists; {}", desiredUsername);
+				}
+			} else {
+				logger.debug("Passwords don't match; {}/{}", password, password_again);
+			}
+		}
+		return "Not OK";
 	}
 
 }
