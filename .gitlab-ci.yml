@@ -16,6 +16,6 @@ site-build:
   tags: [sprebuild]
   stage: site
   dependencies:
-    - build-job
+    - maven-build
   script:
     - ./mvnw $MAVEN_CLI_OPTS -s ci-settings.xml clean spring-javaformat:apply site-deploy
