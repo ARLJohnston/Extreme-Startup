@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 import uk.ac.gla.spre.warmup.persistence.User;
@@ -28,11 +29,14 @@ public class WarmupController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ServletWebServerApplicationContext webServerAppCtxt;
+
 	@Value("${spre.delegate.keyword}")
 	private String delegationKeyword;
 
 	@Value("${spre.delegate.port}")
-	private String delegationPort;
+	private String maybeDelegationPort;
 
 	@Value("${spring.cloud.client.hostname}")
 	private String hostname;
@@ -40,6 +44,13 @@ public class WarmupController {
 	private static Logger logger = LoggerFactory.getLogger(WarmupController.class);
 
 	private static final String ALREADY_DELEGATED = "alreadyDelegated";
+
+	private String getDelegationPort() {
+		if(!"0".equals(maybeDelegationPort)) {
+			return maybeDelegationPort;
+		}
+		return String.valueOf(webServerAppCtxt.getWebServer().getPort());
+	}
 
 	private List<Integer> getNum(String input) {
 		List<Integer> numbersList = new ArrayList<>();
@@ -75,9 +86,9 @@ public class WarmupController {
 		this.extremeStartupClient.trackRequest(question);
 		if (question != null && question.contains(this.delegationKeyword)
 				&& !allParams.containsKey(ALREADY_DELEGATED)) {
-			logger.debug("Delegating " + question + " to " + "http://" + this.hostname + ":" + this.delegationPort);
+			logger.debug("Delegating " + question + " to " + "http://" + this.hostname + ":" + this.getDelegationPort());
 			try {
-				return delegatedGet("http://" + this.hostname + ":" + this.delegationPort + "/?q=" + question + "&"
+				return delegatedGet("http://" + this.hostname + ":" + this.getDelegationPort() + "/?q=" + question + "&"
 						+ ALREADY_DELEGATED + "=true");
 			}
 			catch (Exception ex) {

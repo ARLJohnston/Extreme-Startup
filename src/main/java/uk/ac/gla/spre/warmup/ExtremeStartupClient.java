@@ -3,6 +3,8 @@ package uk.ac.gla.spre.warmup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -44,8 +46,8 @@ public class ExtremeStartupClient {
 	@Value("${extreme.startup.maxRequestIntervalMS}")
 	private long extremeStartupMaxRequestIntervalMS;
 
-	@Value("${server.port}")
-	private String serverPort;
+	@Autowired
+	private ServletWebServerApplicationContext webServerAppCtxt;
 
 	private static final Logger logger = LoggerFactory.getLogger(ExtremeStartupClient.class);
 
@@ -213,7 +215,7 @@ public class ExtremeStartupClient {
 
 		MultiValueMap<String, String> formFields = new LinkedMultiValueMap<>();
 		formFields.add(EXTREME_STARTUP_REGISTER_FORM_NAME_FIELD, extremeStartupUsername);
-		formFields.add(EXTREME_STARTUP_REGISTER_FORM_URL_FIELD, "http://" + myIpAddress + ":" + serverPort + "/");
+		formFields.add(EXTREME_STARTUP_REGISTER_FORM_URL_FIELD, "http://" + myIpAddress + ":" + webServerAppCtxt.getWebServer().getPort() + "/");
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(formFields,
 				headers);
