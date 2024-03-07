@@ -15,6 +15,9 @@ public class ExtremeStartupHealthIndicator implements HealthIndicator {
     @Value("${spre.delegate.port}")
     private String maybeDelegationPort;
 
+    @Value("${build.version}")
+    private String buildVersion;
+
     @Override
     public Health health() {
         Health.Builder status = Health.up();
@@ -22,7 +25,8 @@ public class ExtremeStartupHealthIndicator implements HealthIndicator {
             status = Health.down();
         }
         return status
-                .withDetail( "instance", instanceNumber )
+                .withDetail( "build version", buildVersion)
+                .withDetail( "instance", instanceNumber)
                 .withDetail( "delegate", maybeDelegationPort)
                 .withDetail( "pid", ProcessHandle.current().pid())
                 .build();

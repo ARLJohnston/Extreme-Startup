@@ -119,10 +119,12 @@ public class WarmupController {
 	// Solvers
 	public String solve(String question, List<Integer> numbers) {
 		if (question != null) {
-			if (question.matches(".*?: what is \\d+ multiplied by \\d+")) {
+			logger.info("Question" + question);
+			if (question.matches(".*?: what is \\d+ multiplied by \\d+.*?")) {
+				logger.info("HERE");
 				return multiplication(numbers);
 			}
-			if (question.matches(".*?: what is \\d+ plus \\d+")) {
+			if (question.matches(".*?: what is \\d+ plus \\d+.*?")) {
 				return addition(numbers);
 			}
 			if (question.matches(".*?: which of the following numbers is both a square and a cube.*?")) {
@@ -137,7 +139,7 @@ public class WarmupController {
 			if (question.matches(".*?: who played James Bond in the film Dr No.*?")) {
 				return bond();
 			}
-			if (question.matches(".*?: what is the \\d+.*? in the Fibonnaci sequence")) {
+			if (question.matches(".*?: what is the \\d+.*? in the Fibonnaci sequence.*?")) {
 				return fibonnaci(numbers);
 			}
 			if (question.matches(".*?: what is \\d+ minus \\d+.*?")) {
