@@ -4,6 +4,10 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.Size;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import net.jqwik.api.*;
@@ -24,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @JqwikSpringSupport
 @SpringBootTest(classes = {WarmupApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration(exclude= {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class})
 @ActiveProfiles("test")
 @ContextConfiguration(classes = WarmupController.class)
 class WarmupApplicationTests {

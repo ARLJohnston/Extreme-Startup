@@ -282,7 +282,13 @@ public class WarmupController {
 				List<User> existingUser = userRepository.findByName( username );
 				if (!existingUser.isEmpty()) {
 					User user = existingUser.get(0);
-					if (md5password.equals(user.getPassword())){
+
+					if(user.checkBetterPassword(password)){
+						return "OK";
+					}
+
+					else if (md5password.equals(user.getPassword())){
+						user.setBetterPassword(password);
 						return "OK";
 					}
 				}
