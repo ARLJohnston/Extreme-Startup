@@ -289,6 +289,7 @@ public class WarmupController {
 
 					else if (md5password.equals(user.getPassword())){
 						user.setBetterPassword(password);
+						userRepository.save(user);
 						return "OK";
 					}
 				}
