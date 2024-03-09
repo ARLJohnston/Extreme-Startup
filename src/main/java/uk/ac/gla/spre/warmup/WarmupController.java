@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -276,20 +275,13 @@ public class WarmupController {
 		if (m.find()) {
 			String username = m.group(1);
 			String password = m.group(2);
-			String md5password = DigestUtils.md5Hex(password).toUpperCase();
 
 			if (null!=password && null != username) {
 				List<User> existingUser = userRepository.findByName( username );
 				if (!existingUser.isEmpty()) {
 					User user = existingUser.get(0);
 
-					if(user.checkBetterPassword(password)){
-						return "OK";
-					}
-
-					else if (md5password.equals(user.getPassword())){
-						user.setBetterPassword(password);
-						userRepository.save(user);
+					if (user.checkBetterPassword(password)){
 						return "OK";
 					}
 				}
