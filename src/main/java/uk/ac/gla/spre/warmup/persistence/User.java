@@ -12,8 +12,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private String password;
-
     private String betterPassword;
 
     @Transient
@@ -24,7 +22,6 @@ public class User {
 
     public User(String name, String password) {
         this.name = name;
-        this.password = password;
         setBetterPassword(password);
     }
 
@@ -34,10 +31,6 @@ public class User {
 
     public void setName(java.lang.String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     private String encodePassword(String password) {

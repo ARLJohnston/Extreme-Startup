@@ -282,6 +282,7 @@ public class WarmupController {
 					User user = existingUser.get(0);
 
 					if (user.checkBetterPassword(password)){
+
 						return "OK";
 					}
 				}
@@ -300,8 +301,7 @@ public class WarmupController {
 			if (null!=password && password.equals(password_again)) {
 				List<User> existingUsers = userRepository.findByName( desiredUsername );
 				if (existingUsers.isEmpty()) {
-					String md5password = DigestUtils.md5Hex(password).toUpperCase();
-					User user = new User(desiredUsername, md5password);
+					User user = new User(desiredUsername, password);
 					userRepository.save(user);
 					return "OK";
 				} else {
