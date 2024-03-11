@@ -42,6 +42,6 @@ public class User {
     }
 
     public Boolean checkBetterPassword(String password) {
-        return this.encoder.matches(betterPassword, this.betterPassword);
+        return this.encoder.matches(password, this.betterPassword);
     }
 }

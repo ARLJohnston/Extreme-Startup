@@ -39,7 +39,7 @@ class WarmupApplicationTests {
 	void contextLoads() {
 	}
 
-	@Property
+	@Property(tries = 25)
 	void divideBySelf(@ForAll int value) {
 		if (value != 0) {
 			int result = value / value;
@@ -48,7 +48,7 @@ class WarmupApplicationTests {
 	}
 
 
-	@Property
+	@Property(tries = 25)
 	void nameIsAddedToHello(@ForAll @AlphaChars @StringLength(min = 1, max = 10) String name) {
 		Map<String, String> request = new HashMap();
 		request.put("q", name);
@@ -57,7 +57,7 @@ class WarmupApplicationTests {
 		assert(greeting.contains("Alistair"));
 	}
 
-	@Property
+	@Property(tries = 25)
 	void multiplication(@ForAll @Positive Integer a, @ForAll @Positive Integer b) {
 		String question = "abc: what is " + String.valueOf(a) + " multiplied by " + String.valueOf(b);
 
@@ -69,7 +69,7 @@ class WarmupApplicationTests {
 		assertEquals(want, result);
 	}
 
-	@Property
+	@Property(tries = 25)
 	void sumSolver(@ForAll @Size(min = 1, max = 100) List<Integer> values){
 		String result = w.addition(values); // substitue for your sum method
 		String expected = String.valueOf(values.stream().mapToInt(Integer::intValue).sum());
